@@ -2,10 +2,7 @@ package exercise.jpamvc.controller;
 
 import exercise.jpamvc.domain.*;
 import exercise.jpamvc.service.OrdersService;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +14,12 @@ public class OrdersController {
 
     OrdersController(OrdersService ordersService){
         this.ordersService = ordersService;
+    }
+
+    @PostMapping(path="/orders/create")
+    @ResponseBody
+    public Orders save(@RequestBody Orders orders){
+        return ordersService.save(orders);
     }
 
     @GetMapping(path="/orders/retrieve/{id}")
@@ -37,25 +40,27 @@ public class OrdersController {
     @GetMapping(path="/orders/detail/{number}")
     public OrderDetailsQuery getOrderDetails(@PathVariable("number") String number) {
         List<Object[]> result =  ordersService.getDetails(number);
-        Address address = ordersService.getOrderAddress(number);
-        OrderLineItem orderLineItems = ordersService.getOrderLineItems(number);
-        OrderDetailsQuery orderDetailsQuery = null;
         for(Object o[]: result){
-            orderDetailsQuery = new OrderDetailsQuery((String) o[0], address.toString() , (Double) o[1], (String) o[2], orderLineItems.getId());
+            Address address = (Address) o[3];
+            OrderLineItem orderLineItems = (OrderLineItem) o[4];
+            return new OrderDetailsQuery((String) o[0], address.toString() , (Double) o[1], (String) o[2], orderLineItems.getId());
         }
-        return orderDetailsQuery;
+        return null;
     }
 
     @GetMapping(path="/shipments/account/{number}")
     public List<ShipmentDetailQuery> getShipments(@PathVariable("number") Long id) {
-        List<String> orderNumbers =  ordersService.getOrderNumber(id);
-        List<OrderLineItem> orderLineItems = ordersService.getShipmentsOrderLineItem(id);
+        List<Object[]> shipmentDetails =  ordersService.getShipmentDetails(id);
         List<ShipmentDetailQuery> shipmentDetailQueries = new ArrayList<>();
-        for(int i = 0; i < orderNumbers.size(); i++){
-            Product product = orderLineItems.get(i).getProduct();
-            Shipment shipment = orderLineItems.get(i).getShipment();
-            ShipmentDetailQuery shipmentDetailQuery = new ShipmentDetailQuery(orderNumbers.get(i), shipment.getShippedDate(), shipment.getDeliveryDate(), product.getName(), orderLineItems.get(i).getQuantity());
-            shipmentDetailQueries.add(shipmentDetailQuery);
+        for(Object o[]: shipmentDetails) {
+            for (int i = 0; i < shipmentDetails.size(); i++) {
+                OrderLineItem orderLineItem = (OrderLineItem) o[i+1];
+                Product product = orderLineItem.getProduct();
+                Shipment shipment = orderLineItem.getShipment();
+                ShipmentDetailQuery shipmentDetailQuery = new ShipmentDetailQuery((String) o[i], shipment.getShippedDate(), shipment.getDeliveryDate(), product.getName(), orderLineItem.getQuantity());
+                shipmentDetailQueries.add(shipmentDetailQuery);
+                i++;
+            }
         }
         return shipmentDetailQueries;
     }

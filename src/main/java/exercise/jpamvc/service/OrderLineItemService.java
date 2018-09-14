@@ -13,6 +13,10 @@ public class OrderLineItemService {
         this.orderLineItemRepository = orderLineItemRepository;
     }
 
+    public OrderLineItem save(OrderLineItem orderLineItem){
+        return orderLineItemRepository.save(orderLineItem);
+    }
+
     public OrderLineItem retrieve(Long id) {
         return orderLineItemRepository.getById(id);
     }

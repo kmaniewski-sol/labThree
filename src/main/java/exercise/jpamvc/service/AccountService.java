@@ -13,6 +13,10 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
+    public Account save(Account account){
+        return accountRepository.save(account);
+    }
+
     public Account retrieve(Long id) {
         return accountRepository.getById(id);
     }

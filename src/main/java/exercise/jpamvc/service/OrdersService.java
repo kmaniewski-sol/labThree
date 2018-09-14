@@ -1,7 +1,5 @@
 package exercise.jpamvc.service;
 
-import exercise.jpamvc.domain.Address;
-import exercise.jpamvc.domain.OrderLineItem;
 import exercise.jpamvc.domain.Orders;
 import exercise.jpamvc.repository.OrdersRepository;
 import org.springframework.stereotype.Service;
@@ -15,6 +13,10 @@ public class OrdersService {
 
     OrdersService(OrdersRepository ordersRepository){
         this.ordersRepository = ordersRepository;
+    }
+
+    public Orders save(Orders orders){
+        return ordersRepository.save(orders);
     }
 
     public Orders retrieve(Long id) {
@@ -33,17 +35,8 @@ public class OrdersService {
         return ordersRepository.getOrderDetails(orderNum);
     }
 
-    public Address getOrderAddress(String orderNum) { return ordersRepository.getOrderAddress(orderNum); }
-
-    public OrderLineItem getOrderLineItems(String orderNum) { return ordersRepository.getOrderLineItems(orderNum); }
-
-    public List<String> getOrderNumber(Long id) {
-        return ordersRepository.getOrderNumber(id);
+    public List<Object[]> getShipmentDetails(Long id) {
+        return ordersRepository.getShipmentDetails(id);
     }
-
-    public List<OrderLineItem> getShipmentsOrderLineItem(Long id) {
-        return ordersRepository.getShipmentsOrderLineItems(id);
-    }
-
 
 }

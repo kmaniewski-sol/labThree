@@ -13,6 +13,10 @@ public class AddressService {
         this.addressRepository = addressRepository;
     }
 
+    public Address save(Address address){
+        return addressRepository.save(address);
+    }
+
     public Address retrieve(Long id) {
         return addressRepository.getById(id);
     }

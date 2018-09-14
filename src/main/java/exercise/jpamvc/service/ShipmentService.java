@@ -13,6 +13,10 @@ public class ShipmentService {
         this.shipmentRepository = shipmentRepository;
     }
 
+    public Shipment save(Shipment shipment){
+        return shipmentRepository.save(shipment);
+    }
+
     public Shipment retrieve(Long id) {
         return shipmentRepository.getById(id);
     }

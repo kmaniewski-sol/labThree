@@ -2,10 +2,7 @@ package exercise.jpamvc.controller;
 
 import exercise.jpamvc.domain.Shipment;
 import exercise.jpamvc.service.ShipmentService;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ShipmentController {
@@ -14,6 +11,12 @@ public class ShipmentController {
 
     ShipmentController(ShipmentService shipmentService){
         this.shipmentService = shipmentService;
+    }
+
+    @PostMapping(path="/shipment/create")
+    @ResponseBody
+    public Shipment save(@RequestBody Shipment shipment){
+        return shipmentService.save(shipment);
     }
 
     @GetMapping(path="/shipment/retrieve/{id}")

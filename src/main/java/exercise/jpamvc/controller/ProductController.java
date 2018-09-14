@@ -2,10 +2,7 @@ package exercise.jpamvc.controller;
 
 import exercise.jpamvc.domain.Product;
 import exercise.jpamvc.service.ProductService;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ProductController {
@@ -14,6 +11,12 @@ public class ProductController {
 
     ProductController(ProductService productService){
         this.productService = productService;
+    }
+
+    @PostMapping(path="/product/create")
+    @ResponseBody
+    public Product save(@RequestBody Product product){
+        return productService.save(product);
     }
 
     @GetMapping(path="/product/retrieve/{id}")

@@ -2,10 +2,7 @@ package exercise.jpamvc.controller;
 
 import exercise.jpamvc.domain.Account;
 import exercise.jpamvc.service.AccountService;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AccountController {
@@ -15,6 +12,12 @@ public class AccountController {
     AccountController(AccountService accountService){
         this.accountService = accountService;
     }
+
+    @PostMapping(path="/account/create")
+    @ResponseBody
+    public Account save(@RequestBody Account account){
+        return accountService.save(account);
+    };
 
     @GetMapping(path="/account/retrieve/{id}")
     public Account retrieve(@PathVariable("id") Long id){

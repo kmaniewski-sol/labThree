@@ -13,6 +13,10 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    public Product save(Product product){
+        return productRepository.save(product);
+    }
+
     public Product retrieve(Long id) {
         return productRepository.getById(id);
     }

@@ -2,10 +2,7 @@ package exercise.jpamvc.controller;
 
 import exercise.jpamvc.domain.OrderLineItem;
 import exercise.jpamvc.service.OrderLineItemService;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class OrderLineItemController {
@@ -15,6 +12,12 @@ public class OrderLineItemController {
     OrderLineItemController(OrderLineItemService orderLineItemService){
         this.orderLineItemService = orderLineItemService;
     }
+
+    @PostMapping(path="/orderlineitem/create")
+    @ResponseBody
+    public OrderLineItem save(@RequestBody OrderLineItem orderLineItem){
+        return orderLineItemService.save(orderLineItem);
+    };
 
     @GetMapping(path="/orderlineitem/retrieve/{id}")
     public OrderLineItem retrieve(@PathVariable("id") Long id){
